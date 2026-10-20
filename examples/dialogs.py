@@ -1,5 +1,5 @@
-from kayat import App,Component,alert, confirm, prompt
-from kayat.ui import Button,Column, Button
+from vnr import App,Component,alert, confirm, prompt
+from vnr.ui import Button,Column, Button
 
 
 class DialogsExample(Component):

@@ -32,9 +32,9 @@ class FakeWebViewModule:
 		return None
 
 
-from kayat.webview.pywebview import PyWebView
-from kayat.bridge import Bridge
-from kayat.window import PythonAPI
+from vnr.webview.pywebview import PyWebView
+from vnr.bridge import Bridge
+from vnr.window import PythonAPI
 
 
 class PyWebViewTest(unittest.TestCase):
@@ -42,7 +42,7 @@ class PyWebViewTest(unittest.TestCase):
 		self.fake_webview = FakeWebViewModule()
 		for name in ("create_window", "start"):
 			patcher = patch(
-				f"kayat.webview.pywebview.webview.{name}",
+				f"vnr.webview.pywebview.webview.{name}",
 				side_effect=getattr(self.fake_webview, name),
 			)
 			patcher.start()
@@ -79,7 +79,7 @@ class PyWebViewTest(unittest.TestCase):
 			self.assertEqual(view.icon, icon.resolve())
 
 	def test_window_connects_both_communication_directions(self):
-		from kayat.window import Window
+		from vnr.window import Window
 
 		window = Window("Test")
 		window.bridge.register("hello", lambda name: f"Hello, {name}!")
@@ -89,7 +89,7 @@ class PyWebViewTest(unittest.TestCase):
 		self.assertIs(window.js._webview, window.webview)
 
 	def test_window_load_forwards_html_to_webview(self):
-		from kayat.window import Window
+		from vnr.window import Window
 
 		window = Window("Test")
 		window.webview = types.SimpleNamespace(html=None)
@@ -104,9 +104,9 @@ class PyWebViewTest(unittest.TestCase):
 		self.assertIn('flex-direction: row;', window.webview.html)
 
 	def test_window_load_applies_base_css_without_replacing_layout_styles(self):
-		from kayat.rendering import HTMLRenderer
-		from kayat.ui import Column, Text
-		from kayat.window import Window
+		from vnr.rendering import HTMLRenderer
+		from vnr.ui import Column, Text
+		from vnr.window import Window
 
 		window = Window("Test")
 		window.webview = types.SimpleNamespace(html=None)
@@ -120,7 +120,7 @@ class PyWebViewTest(unittest.TestCase):
 		self.assertIn('gap: 12px; align-items: center', window.webview.html)
 
 	def test_window_load_injects_event_runtime(self):
-		from kayat.window import Window
+		from vnr.window import Window
 
 		window = Window("Test")
 		window.webview = types.SimpleNamespace(html=None)
@@ -132,9 +132,9 @@ class PyWebViewTest(unittest.TestCase):
 		self.assertIn("dispatch_event", window.webview.html)
 
 	def test_window_load_preserves_all_hello_example_children(self):
-		from kayat.rendering import HTMLRenderer
-		from kayat.ui import Button, Column, Text
-		from kayat.window import Window
+		from vnr.rendering import HTMLRenderer
+		from vnr.ui import Button, Column, Text
+		from vnr.window import Window
 
 		window = Window("Test")
 		window.webview = types.SimpleNamespace(html=None)

@@ -1,6 +1,6 @@
 import unittest
 
-from kayat.ui import Button, Column, Component, Element, State, Text
+from vnr.ui import Button, Column, Component, Element, State, Text
 
 
 class Counter(Component):

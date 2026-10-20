@@ -1,6 +1,6 @@
 from collections.abc import Callable
 
-from kayat.core.events import Events
+from .events import Events
 
 
 _UNSET = object()

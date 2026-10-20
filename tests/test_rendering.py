@@ -1,8 +1,8 @@
 import unittest
 
-from kayat.bridge import Bridge
-from kayat.rendering import HTMLRenderer
-from kayat.ui import Button, Column, Component, Container, Element, Row, State, Text
+from vnr.bridge import Bridge
+from vnr.rendering import HTMLRenderer
+from vnr.ui import Button, Column, Component, Container, Element, Row, State, Text
 
 
 class UnsupportedElement(Element):

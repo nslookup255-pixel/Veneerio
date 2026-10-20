@@ -24,16 +24,16 @@ _TEMPLATE_FILES = (
 
 def create_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="kayat",
+        prog="vnr",
         description="A Python-first desktop GUI framework powered by HTML and CSS.",
     )
     parser.add_argument(
         "--version",
         action="store_true",
-        help="show the installed Kayat version and exit",
+        help="show the installed Veneerio version and exit",
     )
     subparsers = parser.add_subparsers(dest="command")
-    new_parser = subparsers.add_parser("new", help="create a new Kayat project")
+    new_parser = subparsers.add_parser("new", help="create a new Veneerio project")
     new_parser.add_argument(
         "path",
         type=Path,
@@ -44,7 +44,7 @@ def create_parser() -> argparse.ArgumentParser:
 
 def _render_template(filename: str, project_name: str) -> str:
     template = (
-        files("kayat")
+        files("vnr")
         .joinpath("templates", "scaffold", filename)
         .read_text(encoding="utf-8")
     )
@@ -71,7 +71,7 @@ def create_project(path: Path) -> Path:
             f"parent directory does not exist: {destination.parent}"
         )
 
-    with TemporaryDirectory(prefix=".kayat-", dir=destination.parent) as temporary:
+    with TemporaryDirectory(prefix=".vnr-", dir=destination.parent) as temporary:
         staging_directory = Path(temporary)
         for filename in _TEMPLATE_FILES:
             _write_project_file(
@@ -98,7 +98,7 @@ def create_project(path: Path) -> Path:
 
 
 def print_header() -> None:
-    print("KAYAT")
+    print("VENEERIO")
     print("Python GUI Framework")
 
 
@@ -108,9 +108,9 @@ def main(argv: Sequence[str] | None = None) -> None:
     options = parser.parse_args(arguments)
     if options.version:
         try:
-            installed_version = version("kayat")
+            installed_version = version("vnr")
         except PackageNotFoundError:
-            parser.error("could not determine the installed Kayat version")
+            parser.error("could not determine the installed Veneerio version")
         print(f"{parser.prog} {installed_version}")
         parser.exit()
     if not arguments:
@@ -124,7 +124,7 @@ def main(argv: Sequence[str] | None = None) -> None:
         except OSError as error:
             parser.error(f"could not create project: {error}")
 
-        print(f"Created Kayat project at {project_path}")
+        print(f"Created Veneerio project at {project_path}")
         print("Next steps:")
         print(f"  cd {options.path}")
         print("  python -m venv .venv")

@@ -1,6 +1,6 @@
 import unittest
 
-from kayat.bridge import Bridge, JS
+from vnr.bridge import Bridge, JS
 
 
 class RecordingWebView:

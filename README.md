@@ -1,9 +1,9 @@
 <div align="center">
 
-# Kayat
+# Veneerio
 
 ### A Python-first desktop GUI framework powered by HTML and CSS.
-<image src="assets/logo.png" alt="Kayat Logo" width="200">
+<image src="assets/logo.png" alt="Veneerio Logo" width="200">
 
 </div>
 
@@ -33,11 +33,11 @@
 
 ## About
 
-**Kayat** is a Python-first desktop GUI framework that lets you build graphical applications using Python.
+**Veneerio** is a Python-first desktop GUI framework that lets you build graphical applications using Python.
 
-Instead of writing HTML and CSS directly, you build your interface with Kayat's Python components. Kayat handles the rendering layer internally.
+Instead of writing HTML and CSS directly, you build your interface with Veneerio's Python components. Veneerio handles the rendering layer internally.
 
-<!-- Put a screenshot of a Kayat application here -->
+<!-- Put a screenshot of a Veneerio application here -->
 
 > **Python in. Desktop app out.**
 
@@ -99,7 +99,7 @@ button.on_click(handle_click)
 
 ### HTML-powered
 
-Kayat uses HTML and CSS internally to render the user interface.
+Veneerio uses HTML and CSS internally to render the user interface.
 
 </td>
 <td>
@@ -129,36 +129,36 @@ Use built-in alert, confirmation, and user input dialogs.
 ## 📦 Installation
 
 ```bash
-pip install kayat
+pip install vnr
 ```
 
-> Kayat is currently under active development.
+> Veneerio is currently under active development.
 > The first PyPI release is planned for v0.3.0.
 
 ## Command-line interface
 
-After installing Kayat, use the CLI to view its current options or installed version:
+After installing Veneerio, use the `vnr` CLI to view its current options or installed version:
 
 ```bash
-kayat --help
-kayat --version
+vnr --help
+vnr --version
 ```
 
-## Hello, Kayat!
+## Hello, Veneerio!
 
 ```python
-from kayat import App
-from kayat.ui import Column, Text, Button
+from vnr import App
+from vnr.ui import Column, Text, Button
 
 
 def hello():
-    print("Hello from Kayat!")
+    print("Hello from Veneerio!")
 
 
 app = App(
-    title="Hello Kayat",
+    title="Hello Veneerio",
     content=Column(
-        Text("Hello, Kayat!"),
+        Text("Hello, Veneerio!"),
         Button("Click me", on_click=hello)
     )
 )
@@ -166,7 +166,7 @@ app = App(
 app.run()
 ```
 
-<!-- Put a GIF/video screenshot of the Hello Kayat app here -->
+<!-- Put a GIF/video screenshot of the Hello Veneerio app here -->
 
 <div align="center">
 
@@ -178,11 +178,11 @@ app.run()
 
 # Components
 
-Kayat uses a component-based UI model.
+Veneerio uses a component-based UI model.
 
 ```python
 Column(
-    Text("Welcome to Kayat"),
+    Text("Welcome to Veneerio"),
     Button("Get Started"),
     Row(
         Button("Settings"),
@@ -212,12 +212,12 @@ This makes it possible to build complex interfaces from small, reusable componen
 
 # State & Events
 
-Kayat provides built-in systems for application state and user interaction.
+Veneerio provides built-in systems for application state and user interaction.
 
 ### State
 
 ```python
-from kayat.core.state import State
+from vnr.core.state import State
 
 
 class Counter:
@@ -241,7 +241,7 @@ State and events are designed to work together so applications can respond to us
 
 # UI Without HTML
 
-Kayat is powered by HTML and CSS internally.
+Veneerio is powered by HTML and CSS internally.
 
 However, you don't have to build your UI by writing HTML manually.
 
@@ -263,7 +263,7 @@ Column(
 )
 ```
 
-Kayat transforms the component tree into the underlying UI representation.
+Veneerio transforms the component tree into the underlying UI representation.
 
 ---
 
@@ -276,7 +276,7 @@ Kayat transforms the component tree into the underlying UI representation.
            │
            ▼
 ┌─────────────────────┐
-│   Kayat Components  │
+│  Veneerio Components │
 └──────────┬──────────┘
            │
            ▼
@@ -302,17 +302,17 @@ Kayat transforms the component tree into the underlying UI representation.
 
 <!-- Put architecture diagram image here -->
 
-Kayat separates application logic from the rendering layer, allowing developers to work primarily with Python.
+Veneerio separates application logic from the rendering layer, allowing developers to work primarily with Python.
 
 ---
 
 # Example
 
-<!-- Put a large screenshot of a more complete Kayat application here -->
+<!-- Put a large screenshot of a more complete Veneerio application here -->
 
 <div align="center">
 
-*Example application built with Kayat*
+*Example application built with Veneerio*
 
 </div>
 
@@ -320,15 +320,15 @@ Kayat separates application logic from the rendering layer, allowing developers 
 
 # Deployment
 
-One of Kayat's goals is to make desktop application distribution simple.
+One of Veneerio's goals is to make desktop application distribution simple.
 
 The planned workflow is:
 
 ```text
-Kayat Project
+Veneerio Project
       │
       ▼
-   kayat build
+   vnr build
       │
       ▼
 Desktop Application
@@ -346,11 +346,11 @@ Planned deployment features include:
 
 ## Roadmap
 
-Kayat is a Python-first GUI framework designed to integrate naturally with existing Python applications and libraries, while making GUI development and deployment simple.
+Veneerio is a Python-first GUI framework designed to integrate naturally with existing Python applications and libraries, while making GUI development and deployment simple.
 
 ### v0.2 — Foundation
 
-Focus on making the core Kayat API usable and stable.
+Focus on making the core Veneerio API usable and stable.
 
 - Python ↔ JavaScript communication
 - WebView integration
@@ -365,19 +365,19 @@ Focus on making the core Kayat API usable and stable.
 
 ### v0.3 — Developer Experience
 
-Focus on making it easy to start a Kayat project.
+Focus on making it easy to start a Veneerio project.
 
-- `kayat new <project-name>`
+- `vnr new <project-name>`
 - Project scaffolding
 - Virtual environment setup
 - Dependency detection
 - Dependency installation/setup
-- `kayat dev`
+- `vnr dev`
 - Development server
 - Hot reload
 - Better error messages
 
-`kayat new` will eventually be able to inspect an existing Python project, detect its dependencies, create and configure a virtual environment, and set up the required project dependencies.
+`vnr new` will eventually be able to inspect an existing Python project, detect its dependencies, create and configure a virtual environment, and set up the required project dependencies.
 
 ### v0.4 — Integration
 
@@ -445,8 +445,8 @@ Contributions, ideas, bug reports, and discussions are welcome.
 If you want to contribute:
 
 ```bash
-git clone https://github.com/nslookup255-pixel/Kayat.git
-cd Kayat
+git clone https://github.com/nslookup255-pixel/Veneerio.git
+cd Veneerio
 ```
 
 Then install the development dependencies and run the tests.
@@ -455,23 +455,15 @@ Before opening a pull request, please make sure that existing tests pass.
 
 ---
 
-# Why "Kayat"?
+# Project Name
 
-The name **Kayat** comes from **Kaya Toast**, a popular Singaporean toast dish.
-
-<!-- Put Kaya Toast image here -->
-
-<div align="center">
-
-**Yes, the framework is named after toast.**
-
-</div>
+Veneerio is the new name of the project, previously known as Kayat.
 
 ---
 
 # License
 
-Kayat is released under the **MIT License**.
+Veneerio is released under the **MIT License**.
 
 See [`LICENSE`](LICENSE) for more information.
 
@@ -479,9 +471,9 @@ See [`LICENSE`](LICENSE) for more information.
 
 <div align="center">
 
-<!-- Put Kayat logo image here -->
+<!-- Put Veneerio logo image here -->
 
-### Kayat
+### Veneerio
 
 **Build desktop applications with Python.**
 

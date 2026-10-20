@@ -1,5 +1,5 @@
-from kayat import App, Component
-from kayat.ui import Button, Column, Text
+from vnr import App, Component
+from vnr.ui import Button, Column, Text
 
 
 def greet():

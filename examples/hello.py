@@ -1,5 +1,5 @@
-from kayat import App, Component
-from kayat.ui import Column, Text, Button
+from vnr import App, Component
+from vnr.ui import Column, Text, Button
 
 
 class Hello(Component):
@@ -8,12 +8,12 @@ class Hello(Component):
 
     def render(self):
         return Column(
-            Text("Welcome to Kayat!"),
-            Text("This is a simple example of a Kayat app."),
+            Text("Welcome to Veneerio!"),
+            Text("This is a simple example of a Veneerio app."),
             Button("Click me!", on_click=self.handle_click),
         )
 
 if __name__ == "__main__":
-    app = App(title="Hello from Kayat")
+    app = App(title="Hello from Veneerio")
     app.mount(Hello())
     app.run()

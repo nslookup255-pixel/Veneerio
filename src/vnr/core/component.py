@@ -1,8 +1,8 @@
 from collections.abc import Callable
 
-from kayat.core.events import Events
-from kayat.core.state import State
 from .element import Element
+from .events import Events
+from .state import State
 
 
 class Component:

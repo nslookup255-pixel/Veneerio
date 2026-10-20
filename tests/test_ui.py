@@ -1,7 +1,7 @@
 import unittest
 
-from kayat import Component
-from kayat.ui import Button, Column, Container, Row, Text
+from vnr import Component
+from vnr.ui import Button, Column, Container, Row, Text
 
 
 class Child(Component):

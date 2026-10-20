@@ -1,11 +1,16 @@
 # Changelog
 
-All notable changes to Kayat are documented in this file.
+All notable changes to Veneerio are documented in this file.
 
 This project is under active development. The entries below summarize
 the repository's commit history through October 15, 2026. Entries are grouped
 by development date, not by release version, because the commits do not
 correspond to formal published releases.
+
+## Project Rename
+
+-   Renamed the project from Kayat to Veneerio and updated project branding
+    and repository references in the project documentation.
 
 ## \[Unreleased\]
 

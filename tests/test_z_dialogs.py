@@ -1,8 +1,8 @@
 import unittest
 
-from kayat import alert, confirm, prompt
-from kayat.bridge import JS
-from kayat.window import Window
+from vnr import alert, confirm, prompt
+from vnr.bridge import JS
+from vnr.window import Window
 
 
 class RecordingWebView:

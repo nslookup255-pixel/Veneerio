@@ -1,4 +1,4 @@
-from kayat.core.events import Events as E
+from vnr.core.events import Events as E
 
 def test_on_and_emit():
     events = E()

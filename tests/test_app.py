@@ -3,8 +3,8 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest.mock import patch
 
-from kayat.app import App
-from kayat.ui import Component, Text
+from vnr.app import App
+from vnr.ui import Component, Text
 
 
 class Root(Component):
@@ -84,7 +84,7 @@ class AppTest(unittest.TestCase):
 			app = App(window=window, icon=icon)
 			app.mount(Root())
 
-			with patch("kayat.window.Window") as window_type:
+			with patch("vnr.window.Window") as window_type:
 				app.window = None
 				app.run()
 

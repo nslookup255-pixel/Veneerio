@@ -15,16 +15,16 @@ try:
 except ModuleNotFoundError:
 	from setuptools._vendor import tomli as tomllib
 
-from kayat.cli import create_project, main
+from vnr.cli import create_project, main
 
 
 class CLITest(unittest.TestCase):
 	def test_existing_top_level_package_exports_are_available(self):
-		import kayat
+		import vnr
 
-		for name in kayat.__all__:
+		for name in vnr.__all__:
 			with self.subTest(name=name):
-				self.assertIsNotNone(getattr(kayat, name))
+				self.assertIsNotNone(getattr(vnr, name))
 
 	def test_help_shows_usage_description_and_supported_options(self):
 		output = StringIO()
@@ -32,11 +32,11 @@ class CLITest(unittest.TestCase):
 			main(["--help"])
 
 		self.assertEqual(exit_info.exception.code, 0)
-		self.assertIn("usage: kayat", output.getvalue())
+		self.assertIn("usage: vnr", output.getvalue())
 		self.assertIn("Python-first desktop GUI framework", output.getvalue())
 		self.assertIn("--help", output.getvalue())
 		self.assertIn("--version", output.getvalue())
-		self.assertNotIn("KAYAT", output.getvalue())
+		self.assertNotIn("VENEERIO", output.getvalue())
 
 	def test_new_help_describes_project_creation(self):
 		output = StringIO()
@@ -44,7 +44,7 @@ class CLITest(unittest.TestCase):
 			main(["new", "-h"])
 
 		self.assertEqual(exit_info.exception.code, 0)
-		self.assertIn("usage: kayat new", output.getvalue())
+		self.assertIn("usage: vnr new", output.getvalue())
 		self.assertIn("project directory to create", output.getvalue())
 
 	def test_new_without_path_reports_usage_error(self):
@@ -80,7 +80,7 @@ class CLITest(unittest.TestCase):
 			self.assertEqual(project_metadata["project"]["requires-python"], ">=3.10")
 			self.assertEqual(
 				project_metadata["project"]["dependencies"],
-				["kayat @ git+https://github.com/nslookup255-pixel/Kayat.git"],
+				["vnr @ git+https://github.com/nslookup255-pixel/Veneerio.git"],
 			)
 			self.assertIn(str(project_path), output.getvalue())
 			self.assertIn("python main.py", output.getvalue())
@@ -123,7 +123,7 @@ class CLITest(unittest.TestCase):
 	def test_project_creation_failure_cleans_staging_and_partial_destination(self):
 		with TemporaryDirectory() as directory:
 			project_path = Path(directory) / "failed-app"
-			write_file = "kayat.cli._write_project_file"
+			write_file = "vnr.cli._write_project_file"
 			error_output = StringIO()
 			with patch(write_file, side_effect=OSError("simulated write failure")):
 				with (
@@ -140,7 +140,7 @@ class CLITest(unittest.TestCase):
 	def test_project_publish_failure_removes_created_files_and_directory(self):
 		with TemporaryDirectory() as directory:
 			project_path = Path(directory) / "failed-app"
-			replace_file = "kayat.cli.os.replace"
+			replace_file = "vnr.cli.os.replace"
 
 			real_replace = os.replace
 			call_count = 0
@@ -165,41 +165,41 @@ class CLITest(unittest.TestCase):
 			main(["--version"])
 
 		self.assertEqual(exit_info.exception.code, 0)
-		self.assertEqual(output.getvalue().strip(), f"kayat {version('kayat')}")
-		self.assertNotIn("KAYAT", output.getvalue())
+		self.assertEqual(output.getvalue().strip(), f"vnr {version('vnr')}")
+		self.assertNotIn("VENEERIO", output.getvalue())
 
 	def test_version_reports_missing_package_metadata(self):
 		error_output = StringIO()
 		with (
-			patch("kayat.cli.version", side_effect=PackageNotFoundError("kayat")),
+			patch("vnr.cli.version", side_effect=PackageNotFoundError("vnr")),
 			redirect_stderr(error_output),
 			self.assertRaises(SystemExit) as exit_info,
 		):
 			main(["--version"])
 
 		self.assertEqual(exit_info.exception.code, 2)
-		self.assertIn("could not determine the installed Kayat version", error_output.getvalue())
+		self.assertIn("could not determine the installed Veneerio version", error_output.getvalue())
 
 	def test_no_arguments_prints_brand_header(self):
 		output = StringIO()
 		with redirect_stdout(output):
 			main([])
 
-		self.assertEqual(output.getvalue(), "KAYAT\nPython GUI Framework\n")
+		self.assertEqual(output.getvalue(), "VENEERIO\nPython GUI Framework\n")
 
 	def test_options_do_not_import_gui_modules(self):
 		for option in ("--help", "--version"):
 			with self.subTest(option=option):
 				code = (
 					"import sys\n"
-					"from kayat.cli import main\n"
+					"from vnr.cli import main\n"
 					"try:\n"
 					f"    main([{option!r}])\n"
 					"except SystemExit as error:\n"
 					"    if error.code != 0:\n"
 					"        raise\n"
 					"assert not any(name == 'webview' or "
-					"name.startswith('kayat.webview') or name == 'kayat.window' "
+					"name.startswith('vnr.webview') or name == 'vnr.window' "
 					"for name in sys.modules)\n"
 				)
 				result = subprocess.run(
@@ -212,7 +212,7 @@ class CLITest(unittest.TestCase):
 				self.assertEqual(result.returncode, 0, result.stderr)
 
 	def test_installed_console_script_handles_help_and_version(self):
-		script_name = "kayat.exe" if os.name == "nt" else "kayat"
+		script_name = "vnr.exe" if os.name == "nt" else "vnr"
 		script = Path(sysconfig.get_path("scripts")) / script_name
 		self.assertTrue(script.is_file(), f"Console script not found: {script}")
 
@@ -226,17 +226,17 @@ class CLITest(unittest.TestCase):
 				)
 				self.assertEqual(result.returncode, 0, result.stderr)
 				if option == "--help":
-					self.assertIn("usage: kayat", result.stdout)
-					self.assertNotIn("KAYAT", result.stdout)
+					self.assertIn("usage: vnr", result.stdout)
+					self.assertNotIn("VENEERIO", result.stdout)
 				else:
 					self.assertEqual(
 						result.stdout.strip(),
-						f"kayat {version('kayat')}",
+						f"vnr {version('vnr')}",
 					)
 					self.assertNotIn("Python GUI Framework", result.stdout)
 
 	def test_installed_console_script_supports_new_help(self):
-		script_name = "kayat.exe" if os.name == "nt" else "kayat"
+		script_name = "vnr.exe" if os.name == "nt" else "vnr"
 		script = Path(sysconfig.get_path("scripts")) / script_name
 		for help_option in ("-h", "--help"):
 			with self.subTest(help_option=help_option):
@@ -248,10 +248,10 @@ class CLITest(unittest.TestCase):
 				)
 
 				self.assertEqual(result.returncode, 0, result.stderr)
-				self.assertIn("usage: kayat new", result.stdout)
+				self.assertIn("usage: vnr new", result.stdout)
 
 	def test_installed_console_script_shows_header_without_arguments(self):
-		script_name = "kayat.exe" if os.name == "nt" else "kayat"
+		script_name = "vnr.exe" if os.name == "nt" else "vnr"
 		script = Path(sysconfig.get_path("scripts")) / script_name
 		result = subprocess.run(
 			[str(script)],
@@ -261,7 +261,7 @@ class CLITest(unittest.TestCase):
 		)
 
 		self.assertEqual(result.returncode, 0, result.stderr)
-		self.assertEqual(result.stdout, "KAYAT\nPython GUI Framework\n")
+		self.assertEqual(result.stdout, "VENEERIO\nPython GUI Framework\n")
 
 
 if __name__ == "__main__":
