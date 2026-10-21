@@ -3,14 +3,21 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "vnr"
+name = "Veneerio"
 version = "0.3.0.dev0"
 description = "A Python-first desktop GUI framework powered by HTML and CSS."
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "MIT" }
+license = "MIT"
 authors = [
     { name = "Hayul Noh" }
+]
+keywords = ["python", "gui", "desktop", "html", "css"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: MIT License",
 ]
 
 dependencies = [
