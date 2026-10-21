@@ -23,6 +23,9 @@ python main.py
 
 On Windows PowerShell, activate the environment with
 `.venv\Scripts\Activate.ps1`, then run the two Python commands above.
+After installation, use `vnr dev` instead of `python main.py` to automatically
+restart the application when Python, HTML, CSS, or JavaScript files change.
+Press Ctrl+C to stop the development server.
 
 ## Project structure
 

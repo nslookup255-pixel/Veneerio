@@ -11,11 +11,14 @@ correspond to formal published releases.
 
 -   Renamed the project from Kayat to Veneerio and updated project branding
     and repository references in the project documentation.
+    ([`13ade6d`](https://github.com/nslookup255-pixel/Veneerio/commit/13ade6d2f0d551cb65a92cbe1eaff48e871986b9))
 
 ## \[Unreleased\]
 
 ### Added
 
+-   Added `vnr dev` with project validation, file polling, and application
+    restarts when project files change.
 -   Added the `kayat` CLI with help and version options.
     ([`820b1ff`](https://github.com/nslookup255-pixel/Kayat/commit/820b1ffc069f013bd0e45c5f7de56881121da6b7))
 -   Added project creation with template-based scaffolding.

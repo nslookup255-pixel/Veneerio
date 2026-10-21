@@ -47,6 +47,36 @@ class CLITest(unittest.TestCase):
 		self.assertIn("usage: vnr new", output.getvalue())
 		self.assertIn("project directory to create", output.getvalue())
 
+	def test_dev_help_describes_development_server(self):
+		output = StringIO()
+		with redirect_stdout(output), self.assertRaises(SystemExit) as exit_info:
+			main(["dev", "-h"])
+
+		self.assertEqual(exit_info.exception.code, 0)
+		self.assertIn("usage: vnr dev", output.getvalue())
+		self.assertIn("restart it when project files change", output.getvalue())
+
+	def test_dev_runs_the_current_working_directory(self):
+		with patch("vnr.cli.Path.cwd", return_value=Path("project")) as cwd:
+			with patch("vnr.cli.run_dev") as run_dev:
+				main(["dev"])
+
+		cwd.assert_called_once_with()
+		run_dev.assert_called_once_with(Path("project"))
+
+	def test_dev_reports_invalid_project_without_traceback(self):
+		error_output = StringIO()
+		with (
+			patch("vnr.cli.run_dev", side_effect=ValueError("main.py is missing")),
+			redirect_stderr(error_output),
+			self.assertRaises(SystemExit) as exit_info,
+		):
+			main(["dev"])
+
+		self.assertEqual(exit_info.exception.code, 2)
+		self.assertIn("main.py is missing", error_output.getvalue())
+		self.assertNotIn("Traceback", error_output.getvalue())
+
 	def test_new_without_path_reports_usage_error(self):
 		error_output = StringIO()
 		with redirect_stderr(error_output), self.assertRaises(SystemExit) as exit_info:
@@ -165,13 +195,13 @@ class CLITest(unittest.TestCase):
 			main(["--version"])
 
 		self.assertEqual(exit_info.exception.code, 0)
-		self.assertEqual(output.getvalue().strip(), f"vnr {version('vnr')}")
+		self.assertEqual(output.getvalue().strip(), f"vnr {version('Veneerio')}")
 		self.assertNotIn("VENEERIO", output.getvalue())
 
 	def test_version_reports_missing_package_metadata(self):
 		error_output = StringIO()
 		with (
-			patch("vnr.cli.version", side_effect=PackageNotFoundError("vnr")),
+			patch("vnr.cli.version", side_effect=PackageNotFoundError("Veneerio")),
 			redirect_stderr(error_output),
 			self.assertRaises(SystemExit) as exit_info,
 		):
@@ -231,7 +261,7 @@ class CLITest(unittest.TestCase):
 				else:
 					self.assertEqual(
 						result.stdout.strip(),
-						f"vnr {version('vnr')}",
+						f"vnr {version('Veneerio')}",
 					)
 					self.assertNotIn("Python GUI Framework", result.stdout)
 

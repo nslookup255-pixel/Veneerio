@@ -8,6 +8,8 @@ from importlib.resources import files
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
+from .dev import run_dev
+
 
 _PROJECT_NAME_PATTERN = re.compile(
     r"[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?"
@@ -38,6 +40,11 @@ def create_parser() -> argparse.ArgumentParser:
         "path",
         type=Path,
         help="project directory to create",
+    )
+    subparsers.add_parser(
+        "dev",
+        help="run and restart the current project on changes",
+        description="Run main.py and restart it when project files change.",
     )
     return parser
 
@@ -108,7 +115,7 @@ def main(argv: Sequence[str] | None = None) -> None:
     options = parser.parse_args(arguments)
     if options.version:
         try:
-            installed_version = version("vnr")
+            installed_version = version("Veneerio")
         except PackageNotFoundError:
             parser.error("could not determine the installed Veneerio version")
         print(f"{parser.prog} {installed_version}")
@@ -130,3 +137,8 @@ def main(argv: Sequence[str] | None = None) -> None:
         print("  python -m venv .venv")
         print("  python -m pip install -e .")
         print("  python main.py")
+    elif options.command == "dev":
+        try:
+            run_dev(Path.cwd())
+        except (ValueError, OSError) as error:
+            parser.error(str(error))

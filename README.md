@@ -144,6 +144,10 @@ vnr --help
 vnr --version
 ```
 
+Run `vnr dev` from a Veneerio project directory to start `main.py` and restart
+the application when Python, HTML, CSS, or JavaScript files change. Press
+Ctrl+C to stop the development server.
+
 ## Hello, Veneerio!
 
 ```python
