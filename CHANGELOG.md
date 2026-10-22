@@ -19,6 +19,7 @@ correspond to formal published releases.
 
 -   Added `vnr dev` with project validation, file polling, and application
     restarts when project files change.
+    ([`9471ed3`](https://github.com/nslookup255-pixel/Veneerio/commit/9471ed3ced5f9a33c7e4ac6d55e95f14e375df72))
 -   Added the `kayat` CLI with help and version options.
     ([`820b1ff`](https://github.com/nslookup255-pixel/Kayat/commit/820b1ffc069f013bd0e45c5f7de56881121da6b7))
 -   Added project creation with template-based scaffolding.
@@ -57,6 +58,7 @@ correspond to formal published releases.
 
 ### Fixed
 
+-   Updated scaffold documentation to use the current Veneerio branding instead of Kayat.
 -   Fixed column layout and text rendering.
     ([`05a6d90`](https://github.com/nslookup255-pixel/Kayat/commit/05a6d90d1fbb4fe4593bd03f104bdbaa09bd3faf))
 -   Resolved optional-member access warnings in the WebView integration.

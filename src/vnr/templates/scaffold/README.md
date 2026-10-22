@@ -1,18 +1,18 @@
 # {{project_name}}
 
-A desktop application built with Kayat, a Python-first GUI framework using HTML and CSS.
+A desktop application built with Veneerio, a Python-first GUI framework using HTML and CSS.
 This starter requires Python 3.10 or newer.
 
 ## Install and run
 
-Kayat is currently developed from its public GitHub repository; the PyPI release is planned for v0.3.0.
+Veneerio is currently developed from its public GitHub repository; the PyPI release is planned for v0.3.0.
 Installing the Git-based dependency requires Git to be available on `PATH`.
 
 ```bash
 python -m venv .venv
 ```
 
-Activate the environment, then install the project and its Kayat dependency:
+Activate the environment, then install the project and its Veneerio dependency:
 
 ```bash
 # macOS/Linux
@@ -39,7 +39,7 @@ Press Ctrl+C to stop the development server.
 └── .gitignore
 ```
 
-`main.py` is the application entry point. It creates a Kayat `App`, mounts the
+`main.py` is the application entry point. It creates a Veneerio `App`, mounts the
 root component, and runs the desktop window. The example button calls the
 ordinary Python function `greet`; replace it with a function from your existing
 program or pass your own function to a `Button`'s `on_click` callback.
@@ -50,7 +50,7 @@ of the GUI.
 
 ## Links
 
-- [Kayat source repository](https://github.com/nslookup255-pixel/Kayat)
+- [Veneerio source repository](https://github.com/nslookup255-pixel/Veneerio)
 
 Official documentation is currently being developed.
 
