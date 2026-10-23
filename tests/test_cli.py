@@ -94,17 +94,37 @@ class CLITest(unittest.TestCase):
 
 			self.assertEqual(
 				{path.name for path in project_path.iterdir()},
-				{"main.py", "README.md", "pyproject.toml", ".gitignore", "AGENTS.md", "CLAUDE.md"},
+				{
+					"main.py",
+					"README.md",
+					"VNR_GUIDE.md",
+					"pyproject.toml",
+					".gitignore",
+					"AGENTS.md",
+					"CLAUDE.md",
+				},
 			)
-			self.assertIn("my-kayat-app", (project_path / "README.md").read_text())
-			self.assertIn("my-kayat-app", (project_path / "main.py").read_text())
+			self.assertIn(
+				"my-kayat-app",
+				(project_path / "README.md").read_text(encoding="utf-8"),
+			)
+			self.assertIn(
+				"my-kayat-app",
+				(project_path / "main.py").read_text(encoding="utf-8"),
+			)
+			guide = (project_path / "VNR_GUIDE.md").read_text(encoding="utf-8")
+			self.assertIn("automatically rerender", guide)
+			self.assertIn(
+				"Read `VNR_GUIDE.md`",
+				(project_path / "AGENTS.md").read_text(encoding="utf-8"),
+			)
 			compile(
-				(project_path / "main.py").read_text(),
+				(project_path / "main.py").read_text(encoding="utf-8"),
 				str(project_path / "main.py"),
 				"exec",
 			)
 			project_metadata = tomllib.loads(
-				(project_path / "pyproject.toml").read_text()
+				(project_path / "pyproject.toml").read_text(encoding="utf-8")
 			)
 			self.assertEqual(project_metadata["project"]["name"], "my-kayat-app")
 			self.assertEqual(project_metadata["project"]["requires-python"], ">=3.10")

@@ -17,6 +17,7 @@ _PROJECT_NAME_PATTERN = re.compile(
 _TEMPLATE_FILES = (
     "main.py",
     "README.md",
+    "VNR_GUIDE.md",
     "pyproject.toml",
     ".gitignore",
     "AGENTS.md",

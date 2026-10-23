@@ -75,9 +75,10 @@ Column(
 <tr>
 <td>
 
-### Reactive State
+### Component State
 
-Manage application state and update your UI when state changes.
+Store Python values on components. State changes do not automatically update
+the mounted UI.
 
 </td>
 <td>
@@ -129,11 +130,11 @@ Use built-in alert, confirmation, and user input dialogs.
 ## 📦 Installation
 
 ```bash
-pip install vnr
+python -m pip install "git+https://github.com/nslookup255-pixel/Veneerio.git"
 ```
 
-> Veneerio is currently under active development.
-> The first PyPI release is planned for v0.3.0.
+Veneerio is currently under active development. Installing from Git requires
+Git to be available on `PATH`; the first PyPI release is planned for v0.3.0.
 
 ## Command-line interface
 
@@ -151,7 +152,7 @@ Ctrl+C to stop the development server.
 ## Hello, Veneerio!
 
 ```python
-from vnr import App
+from vnr import App, Component
 from vnr.ui import Column, Text, Button
 
 
@@ -159,15 +160,19 @@ def hello():
     print("Hello from Veneerio!")
 
 
-app = App(
-    title="Hello Veneerio",
-    content=Column(
-        Text("Hello, Veneerio!"),
-        Button("Click me", on_click=hello)
-    )
-)
+class MainView(Component):
+    def render(self):
+        return Column(
+            Text("Hello, Veneerio!"),
+            Button("Click me", on_click=hello),
+        )
 
-app.run()
+
+app = App(title="Hello Veneerio")
+app.mount(MainView())
+
+if __name__ == "__main__":
+    app.run()
 ```
 
 <!-- Put a GIF/video screenshot of the Hello Veneerio app here -->
@@ -221,23 +226,31 @@ Veneerio provides built-in systems for application state and user interaction.
 ### State
 
 ```python
-from vnr.core.state import State
+from vnr import Component, State
 
 
-class Counter:
+class Counter(Component):
     count = State(0)
 ```
+
+`State` provides Python-side component value storage. Changing a value does
+not rerender an already mounted component or update its visible UI; do not rely
+on it for reactive UI updates.
 
 ### Events
 
 ```python
-button = Button("Increment")
-button.on_click(increment)
+button = Button("Increment", on_click=increment)
 ```
 
-Browser click handlers may take no arguments or one plain dictionary with `type` and `element_id` keys. `Button.click()` and `Events.emit()` pass through the arguments supplied by the caller.
+You can also set or clear a button callback later with
+`button.on_click(increment)` or `button.on_click(None)`. Browser click handlers
+may take no arguments or one dictionary with `type` and `element_id` keys.
+`Button.click()` and `Events.emit()` instead pass through the arguments supplied
+by the caller.
 
-State and events are designed to work together so applications can respond to user interaction.
+Button callbacks are ordinary Python functions, so they can call existing
+application logic.
 
 <!-- Put a state/event demonstration GIF here -->
 
@@ -280,7 +293,7 @@ Veneerio transforms the component tree into the underlying UI representation.
            │
            ▼
 ┌─────────────────────┐
-│  Veneerio Components │
+│ Veneerio Components │
 └──────────┬──────────┘
            │
            ▼
@@ -364,7 +377,7 @@ Focus on making the core Veneerio API usable and stable.
 - Custom application icons
 - Simplified public API
 - Python function ↔ event integration
-- Support for arbitrary Python values in State
+- State storage for arbitrary Python values (without automatic UI updates)
 - Basic value → UI representation
 
 ### v0.3 — Developer Experience

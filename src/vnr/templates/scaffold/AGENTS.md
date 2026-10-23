@@ -3,7 +3,7 @@
 ## Project Context
 
 - Read `README.md` before making changes.
-- Read `VNR_GUIDE.md` before implementing or modifying Veneerio GUI code. (Not supported yet)
+- Read `VNR_GUIDE.md` before implementing or modifying Veneerio GUI code.
 - This project uses Veneerio, a Python-first desktop GUI framework powered by HTML and CSS.
 
 ## Veneerio Development

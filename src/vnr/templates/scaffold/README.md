@@ -34,6 +34,7 @@ Press Ctrl+C to stop the development server.
 ├── AGENTS.md
 ├── CLAUDE.md
 ├── README.md
+├── VNR_GUIDE.md
 ├── main.py
 ├── pyproject.toml
 └── .gitignore
@@ -43,6 +44,8 @@ Press Ctrl+C to stop the development server.
 root component, and runs the desktop window. The example button calls the
 ordinary Python function `greet`; replace it with a function from your existing
 program or pass your own function to a `Button`'s `on_click` callback.
+See `VNR_GUIDE.md` for the verified component, callback, state, styling, dialog,
+and development-workflow details.
 
 For example, import your existing business logic in `main.py` and provide that
 function as the button callback. This lets your Python logic remain independent
@@ -51,7 +54,5 @@ of the GUI.
 ## Links
 
 - [Veneerio source repository](https://github.com/nslookup255-pixel/Veneerio)
-
-Official documentation is currently being developed.
 
 This starter does not include a test suite or lint/type-check configuration.
