@@ -1,3 +1,4 @@
+import json
 import os
 import subprocess
 import sys
@@ -36,6 +37,7 @@ class CLITest(unittest.TestCase):
 		self.assertIn("Python-first desktop GUI framework", output.getvalue())
 		self.assertIn("--help", output.getvalue())
 		self.assertIn("--version", output.getvalue())
+		self.assertIn("dump", output.getvalue())
 		self.assertNotIn("VENEERIO", output.getvalue())
 
 	def test_new_help_describes_project_creation(self):
@@ -57,8 +59,8 @@ class CLITest(unittest.TestCase):
 		self.assertIn("restart it when project files change", output.getvalue())
 
 	def test_dev_runs_the_current_working_directory(self):
-		with patch("vnr.cli.Path.cwd", return_value=Path("project")) as cwd:
-			with patch("vnr.cli.run_dev") as run_dev:
+		with patch("vnr.cli.entrypoint.Path.cwd", return_value=Path("project")) as cwd:
+			with patch("vnr.cli.entrypoint.run_dev") as run_dev:
 				main(["dev"])
 
 		cwd.assert_called_once_with()
@@ -67,7 +69,7 @@ class CLITest(unittest.TestCase):
 	def test_dev_reports_invalid_project_without_traceback(self):
 		error_output = StringIO()
 		with (
-			patch("vnr.cli.run_dev", side_effect=ValueError("main.py is missing")),
+			patch("vnr.cli.entrypoint.run_dev", side_effect=ValueError("main.py is missing")),
 			redirect_stderr(error_output),
 			self.assertRaises(SystemExit) as exit_info,
 		):
@@ -75,6 +77,92 @@ class CLITest(unittest.TestCase):
 
 		self.assertEqual(exit_info.exception.code, 2)
 		self.assertIn("main.py is missing", error_output.getvalue())
+		self.assertNotIn("Traceback", error_output.getvalue())
+
+	def test_dump_prints_application_state_as_json_without_running_main_block(self):
+		with TemporaryDirectory() as directory:
+			project = Path(directory)
+			(project / "main.py").write_text(
+				"from vnr import App, Component, State\n"
+				"from vnr.ui import Text\n"
+				"class Root(Component):\n"
+				"    count = State(3)\n"
+				"    def render(self):\n"
+				"        return Text(str(self.count))\n"
+				"app = App(title='Inspect me')\n"
+				"app.mount(Root())\n"
+				"if __name__ == '__main__':\n"
+				"    raise RuntimeError('window must not start')\n",
+				encoding="utf-8",
+			)
+			output = StringIO()
+			with patch("vnr.cli.entrypoint.Path.cwd", return_value=project):
+				with redirect_stdout(output):
+					main(["dump"])
+
+		dump = json.loads(output.getvalue())
+		self.assertEqual(dump["application"]["title"], "Inspect me")
+		self.assertEqual(dump["root"]["state"], {"count": 3})
+
+	def test_dump_writes_json_to_output_file(self):
+		with TemporaryDirectory() as directory:
+			project = Path(directory)
+			(project / "main.py").write_text(
+				"from vnr import App, Component\n"
+				"from vnr.ui import Text\n"
+				"class Root(Component):\n"
+				"    def render(self):\n"
+				"        return Text('ready')\n"
+				"app = App()\n"
+				"app.mount(Root())\n",
+				encoding="utf-8",
+			)
+			output_path = project / "state.json"
+			with patch("vnr.cli.entrypoint.Path.cwd", return_value=project):
+				main(["dump", "--output", str(output_path)])
+
+			dump = json.loads(output_path.read_text(encoding="utf-8"))
+			self.assertEqual(dump["schema_version"], 1)
+
+	def test_dump_reports_output_file_errors(self):
+		with TemporaryDirectory() as directory:
+			project = Path(directory)
+			(project / "main.py").write_text(
+				"from vnr import App, Component\n"
+				"from vnr.ui import Text\n"
+				"class Root(Component):\n"
+				"    def render(self):\n"
+				"        return Text('ready')\n"
+				"app = App()\n"
+				"app.mount(Root())\n",
+				encoding="utf-8",
+			)
+			error_output = StringIO()
+			with (
+				patch("vnr.cli.entrypoint.Path.cwd", return_value=project),
+				redirect_stderr(error_output),
+				self.assertRaises(SystemExit) as exit_info,
+			):
+				main(["dump", "--output", str(project / "missing" / "state.json")])
+
+		self.assertEqual(exit_info.exception.code, 2)
+		self.assertIn("could not write state dump", error_output.getvalue())
+		self.assertNotIn("Traceback", error_output.getvalue())
+
+	def test_dump_reports_application_errors_without_traceback(self):
+		with TemporaryDirectory() as directory:
+			project = Path(directory)
+			(project / "main.py").write_text("value = 1\n", encoding="utf-8")
+			error_output = StringIO()
+			with (
+				patch("vnr.cli.entrypoint.Path.cwd", return_value=project),
+				redirect_stderr(error_output),
+				self.assertRaises(SystemExit) as exit_info,
+			):
+				main(["dump"])
+
+		self.assertEqual(exit_info.exception.code, 2)
+		self.assertIn("no App instance found", error_output.getvalue())
 		self.assertNotIn("Traceback", error_output.getvalue())
 
 	def test_new_without_path_reports_usage_error(self):
@@ -173,7 +261,7 @@ class CLITest(unittest.TestCase):
 	def test_project_creation_failure_cleans_staging_and_partial_destination(self):
 		with TemporaryDirectory() as directory:
 			project_path = Path(directory) / "failed-app"
-			write_file = "vnr.cli._write_project_file"
+			write_file = "vnr.cli.new._write_project_file"
 			error_output = StringIO()
 			with patch(write_file, side_effect=OSError("simulated write failure")):
 				with (
@@ -190,7 +278,7 @@ class CLITest(unittest.TestCase):
 	def test_project_publish_failure_removes_created_files_and_directory(self):
 		with TemporaryDirectory() as directory:
 			project_path = Path(directory) / "failed-app"
-			replace_file = "vnr.cli.os.replace"
+			replace_file = "vnr.cli.new.os.replace"
 
 			real_replace = os.replace
 			call_count = 0
@@ -221,7 +309,7 @@ class CLITest(unittest.TestCase):
 	def test_version_reports_missing_package_metadata(self):
 		error_output = StringIO()
 		with (
-			patch("vnr.cli.version", side_effect=PackageNotFoundError("Veneerio")),
+			patch("vnr.cli.entrypoint.version", side_effect=PackageNotFoundError("Veneerio")),
 			redirect_stderr(error_output),
 			self.assertRaises(SystemExit) as exit_info,
 		):

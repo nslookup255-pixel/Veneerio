@@ -8,7 +8,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest.mock import Mock, call, patch
 
-from vnr.dev import (
+from vnr.cli.dev import (
     ApplicationProcess,
     DevelopmentServer,
     FileWatcher,
@@ -104,7 +104,7 @@ class ApplicationProcessTest(unittest.TestCase):
             popen_factory=popen,
         )
 
-        with patch("vnr.dev.sys.executable", "python-test"):
+        with patch("vnr.cli.dev.sys.executable", "python-test"):
             manager.start()
 
         popen.assert_called_once_with(

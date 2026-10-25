@@ -149,6 +149,15 @@ Run `vnr dev` from a Veneerio project directory to start `main.py` and restart
 the application when Python, HTML, CSS, or JavaScript files change. Press
 Ctrl+C to stop the development server.
 
+Run `vnr dump` from a project directory to print a JSON snapshot of the single
+`App` instance declared in `main.py`, including its root component tree and
+stored `State` values. It executes module-level setup in `main.py` in a fresh
+Python module context, but skips the `if __name__ == "__main__"` block, so it
+does not launch the desktop window or attach to an already-running app. Use
+`vnr dump --output state.json` to write the snapshot to a file. Values that JSON
+cannot represent directly are emitted as typed markers with a representation
+when available.
+
 ## Hello, Veneerio!
 
 ```python

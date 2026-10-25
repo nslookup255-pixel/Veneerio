@@ -1,14 +1,8 @@
-import argparse
 import os
 import re
-import sys
-from collections.abc import Sequence
-from importlib.metadata import PackageNotFoundError, version
 from importlib.resources import files
 from pathlib import Path
 from tempfile import TemporaryDirectory
-
-from .dev import run_dev
 
 
 _PROJECT_NAME_PATTERN = re.compile(
@@ -23,31 +17,6 @@ _TEMPLATE_FILES = (
     "AGENTS.md",
     "CLAUDE.md",
 )
-
-
-def create_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(
-        prog="vnr",
-        description="A Python-first desktop GUI framework powered by HTML and CSS.",
-    )
-    parser.add_argument(
-        "--version",
-        action="store_true",
-        help="show the installed Veneerio version and exit",
-    )
-    subparsers = parser.add_subparsers(dest="command")
-    new_parser = subparsers.add_parser("new", help="create a new Veneerio project")
-    new_parser.add_argument(
-        "path",
-        type=Path,
-        help="project directory to create",
-    )
-    subparsers.add_parser(
-        "dev",
-        help="run and restart the current project on changes",
-        description="Run main.py and restart it when project files change.",
-    )
-    return parser
 
 
 def _render_template(filename: str, project_name: str) -> str:
@@ -103,43 +72,3 @@ def create_project(path: Path) -> Path:
             raise
 
     return destination
-
-
-def print_header() -> None:
-    print("VENEERIO")
-    print("Python GUI Framework")
-
-
-def main(argv: Sequence[str] | None = None) -> None:
-    parser = create_parser()
-    arguments = sys.argv[1:] if argv is None else argv
-    options = parser.parse_args(arguments)
-    if options.version:
-        try:
-            installed_version = version("Veneerio")
-        except PackageNotFoundError:
-            parser.error("could not determine the installed Veneerio version")
-        print(f"{parser.prog} {installed_version}")
-        parser.exit()
-    if not arguments:
-        print_header()
-        return
-    if options.command == "new":
-        try:
-            project_path = create_project(options.path)
-        except ValueError as error:
-            parser.error(str(error))
-        except OSError as error:
-            parser.error(f"could not create project: {error}")
-
-        print(f"Created Veneerio project at {project_path}")
-        print("Next steps:")
-        print(f"  cd {options.path}")
-        print("  python -m venv .venv")
-        print("  python -m pip install -e .")
-        print("  python main.py")
-    elif options.command == "dev":
-        try:
-            run_dev(Path.cwd())
-        except (ValueError, OSError) as error:
-            parser.error(str(error))
